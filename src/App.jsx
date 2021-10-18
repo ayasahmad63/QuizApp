@@ -7,25 +7,34 @@ import Quiz from './components/quiz/Quiz';
 import Result from './components/result/Result';
 
 function App() {
-  const [questions, setQuestions] = useState({})
-  const [score, setscore] = useState(0)
+
+
+  const [quiz, setQuiz] = useState([])
+
+  const shuffle = (arr) => arr.sort(() => Math.random() - 0.5);
 
   const fetchQuestion = async (Level) => {
     await fetch(
       `https://opentdb.com/api.php?amount=5&category=9&difficulty=${Level}`
     )
       .then((res) => res.json())
-      .then((questions) => {
+      .then(res => {
+        // console.log(res.results);
+        setQuiz(res.results.map(item => (
 
-        setQuestions(questions.results);
-        // console.log(questions);
-        // console.log(data);
+          {
+            question: item.question,
+            options: shuffle([...item.incorrect_answers, item.correct_answer]),
+            answer: item.correct_answer
+          }
 
-      });
+        )));
+      })
+      .catch(err => console.error(err))
 
-    // console.log(questions)
+
   }
-
+  // console.log(quiz)
   return (
     <BrowserRouter>
       <div className="App">
@@ -41,10 +50,10 @@ function App() {
 
           <Route path="/quiz" exact >
             <Quiz
-              questions={questions}
-              score={score}
-              setscore={setscore}
-              setQuestions={setQuestions} />
+
+
+
+              quiz={quiz} />
           </ Route >
 
           <Route path="/result" >

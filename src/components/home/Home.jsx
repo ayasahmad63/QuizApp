@@ -6,7 +6,7 @@ import { useHistory } from 'react-router';
 function Home({ fetchQuestion }) {
 
     const history = useHistory();
-    const [Level, setLevel] = useState("Easy")
+    const [Level, setLevel] = useState("easy")
 
     const handleSumbit = () => {
         console.log(Level)
